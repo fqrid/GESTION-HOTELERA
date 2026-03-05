@@ -1,29 +1,62 @@
-import { Controller, Get, Post, Body, Param, ParseIntPipe } from '@nestjs/common';
-import { EstadiaService } from './estadia.service';
-import { CreateEstadiaDto } from './dto/create-estadia.dto';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { Estadia } from './entities/estadia.entity';
+import { CreateEstadiaDto } from './dto/create-estadia.dto';
 
-@Controller('estadia')
-export class EstadiaController {
-  constructor(private readonly estadiaService: EstadiaService) {}
+@Injectable()
+export class EstadiaService {
+  constructor(
+    @InjectRepository(Estadia)
+    private estadiaRepo: Repository<Estadia>,
+  ) {}
 
-  @Post()
-  create(@Body() dto: CreateEstadiaDto): Promise<Estadia> {
-    return this.estadiaService.create(dto);
+  private calcularSubtotal(fechaIngreso: string, fechaSalida: string, precioPorNoche: number): number {
+    const ingreso = new Date(fechaIngreso);
+    const salida = new Date(fechaSalida);
+    const noches = Math.ceil((salida.getTime() - ingreso.getTime()) / (1000 * 60 * 60 * 24));
+    if (noches <= 0) throw new BadRequestException('La fecha de salida debe ser posterior.');
+    return noches * precioPorNoche;
+
+    private calcularSubtotal(fechaIngreso: Date, fechaSalida: Date, precio: number): number {
+
+  const ingreso = new Date(fechaIngreso).getTime();
+  const salida = new Date(fechaSalida).getTime();
+
+  const dias = (salida - ingreso) / (1000 * 60 * 60 * 24);
+
+  return dias * precio;
+}
   }
 
-  @Get()
+  async create(dto: CreateEstadiaDto): Promise<Estadia> {
+    const huesped = await this.estadiaRepo.manager.findOne('Huesped', { where: { id: dto.huespedId } });
+    if (!huesped) throw new NotFoundException('Huesped no encontrado');
+    const habitacion = await this.estadiaRepo.manager.findOne('Habitacion', { where: { id: dto.habitacionId } });
+    if (!habitacion) throw new NotFoundException('Habitacion no encontrada');
+    const subtotal = this.calcularSubtotal(dto.fechaIngreso, dto.fechaSalida, dto.precioPorNoche);
+    const estadia = this.estadiaRepo.create({ ...dto, subtotal });
+    return this.estadiaRepo.save(estadia);
+  }
+
   findAll(): Promise<Estadia[]> {
-    return this.estadiaService.findAll();
+    return this.estadiaRepo.find({ relations: ['consumos'] });
   }
 
-  @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number): Promise<Estadia> {
-    return this.estadiaService.findOne(+id);
+  async findOne(id: number): Promise<Estadia> {
+    const estadia = await this.estadiaRepo.findOne({ where: { id }, relations: ['consumos'] });
+    if (!estadia) throw new NotFoundException('Estadia no encontrada');
+    return estadia;
   }
 
-  @Get(':id/detalle')
-  detalle(@Param('id', ParseIntPipe) id: number): Promise<object> {
-    return this.estadiaService.detalleCuenta(+id);
+  async detalleCuenta(id: number) {
+    const estadia = await this.findOne(id);
+    const totalConsumos = estadia.consumos.reduce((sum, c) => sum + Number(c.total), 0);
+    const totalFinal = Number(estadia.subtotal) + totalConsumos;
+    return {
+      estadia: { id: estadia.id, huespedId: estadia.huespedId, habitacionId: estadia.habitacionId, fechaIngreso: estadia.fechaIngreso, fechaSalida: estadia.fechaSalida, subtotalAlojamiento: Number(estadia.subtotal) },
+      consumos: estadia.consumos,
+      resumen: { subtotalAlojamiento: Number(estadia.subtotal), totalConsumos, totalFinal },
+    };
   }
 }

@@ -1,27 +1,24 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Estadia } from '../../estadia/entities/estadia.entity';
 
-@Entity('consumos')
+@Entity()
 export class Consumo {
+
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({ name: 'estadia_id' })
-  estadiaId: number;
-
-  @ManyToOne(() => Estadia, (estadia) => estadia.consumos)
-  @JoinColumn({ name: 'estadia_id' })
-  estadia: Estadia;
 
   @Column()
   descripcion: string;
 
-  @Column({ type: 'int' })
+  @Column()
   cantidad: number;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  @Column()
   precioUnitario: number;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  @Column()
   total: number;
+
+  @ManyToOne(() => Estadia, (estadia) => estadia.consumos)
+  estadia: Estadia;
 }

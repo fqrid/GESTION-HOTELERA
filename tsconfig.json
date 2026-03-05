@@ -1,30 +1,15 @@
 {
   "compilerOptions": {
-<<<<<<< Updated upstream
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "resolvePackageJsonExports": true,
-    "esModuleInterop": true,
-    "isolatedModules": true,
-=======
     "module": "commonjs",
+    "target": "ES2021",
     "moduleResolution": "node",
->>>>>>> Stashed changes
-    "declaration": true,
-    "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "ES2021",
-    "sourceMap": true,
-    "outDir": "./dist",
-    "baseUrl": "./",
-    "incremental": true,
+    "useDefineForClassFields": false,
+    "strict": false,
     "skipLibCheck": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "outDir": "./dist"
   }
 }

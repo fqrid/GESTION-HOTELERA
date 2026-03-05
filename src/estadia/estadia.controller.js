@@ -39,10 +39,6 @@ var __setFunctionName = (this && this.__setFunctionName) || function (f, name, p
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EstadiaController = void 0;
-Set - Content;
-src;
-estadia;
-estadia.controller.ts;
 var common_1 = require("@nestjs/common");
 var EstadiaController = function () {
     var _classDecorators = [(0, common_1.Controller)('estadia')];
@@ -91,4 +87,3 @@ var EstadiaController = function () {
     return EstadiaController = _classThis;
 }();
 exports.EstadiaController = EstadiaController;
-'@;
