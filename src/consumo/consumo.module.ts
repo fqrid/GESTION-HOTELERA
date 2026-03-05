@@ -1,15 +1,13 @@
-Set-Content src\estadia\estadia.module.ts @'
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { EstadiaService } from './estadia.service';
-import { EstadiaController } from './estadia.controller';
-import { Estadia } from './entities/estadia.entity';
+import { ConsumoService } from './consumo.service';
+import { ConsumoController } from './consumo.controller';
+import { Consumo } from './entities/consumo.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Estadia])],
-  controllers: [EstadiaController],
-  providers: [EstadiaService],
-  exports: [EstadiaService],
+  imports: [TypeOrmModule.forFeature([Consumo])],
+  controllers: [ConsumoController],
+  providers: [ConsumoService],
+  exports: [ConsumoService],
 })
-export class EstadiaModule {}
-'@
+export class ConsumoModule {}

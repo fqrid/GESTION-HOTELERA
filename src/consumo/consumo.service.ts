@@ -1,4 +1,3 @@
-Set-Content src\consumo\consumo.service.ts @'
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -24,4 +23,3 @@ export class ConsumoService {
     return this.consumoRepo.find({ relations: ['estadia'] });
   }
 }
-'@
