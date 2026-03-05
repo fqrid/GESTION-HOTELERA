@@ -1,27 +1,31 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { Estadia } from '../../estadia/entities/estadia.entity';
+Set-Content src\estadia\entities\estadia.entity.ts @'
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Consumo } from '../../consumo/entities/consumo.entity';
 
-@Entity('consumos')
-export class Consumo {
+@Entity('estadias')
+export class Estadia {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'estadia_id' })
-  estadiaId: number;
+  @Column({ name: 'huesped_id' })
+  huespedId: number;
 
-  @ManyToOne(() => Estadia, (estadia) => estadia.consumos)
-  @JoinColumn({ name: 'estadia_id' })
-  estadia: Estadia;
+  @Column({ name: 'habitacion_id' })
+  habitacionId: number;
 
-  @Column()
-  descripcion: string;
+  @Column({ type: 'date' })
+  fechaIngreso: string;
 
-  @Column({ type: 'int' })
-  cantidad: number;
+  @Column({ type: 'date' })
+  fechaSalida: string;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
-  precioUnitario: number;
+  precioPorNoche: number;
 
   @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
-  total: number;
+  subtotal: number;
+
+  @OneToMany(() => Consumo, (consumo) => consumo.estadia, { cascade: true })
+  consumos: Consumo[];
 }
+'@

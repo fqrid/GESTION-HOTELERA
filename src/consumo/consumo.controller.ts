@@ -1,3 +1,4 @@
+Set-Content src\consumo\consumo.controller.ts @'
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { ConsumoService } from './consumo.service';
 import { CreateConsumoDto } from './dto/create-consumo.dto';
@@ -16,3 +17,4 @@ export class ConsumoController {
     return this.consumoService.findAll();
   }
 }
+'@

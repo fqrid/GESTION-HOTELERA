@@ -1,3 +1,4 @@
+Set-Content src\consumo\consumo.service.ts @'
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -12,8 +13,8 @@ export class ConsumoService {
   ) {}
 
   async create(dto: CreateConsumoDto): Promise<Consumo> {
-    const estadiaExiste = await this.consumoRepo.manager.findOne('Estadia', { where: { id: dto.estadiaId } });
-    if (!estadiaExiste) throw new NotFoundException('Estadia no encontrada');
+    const estadia = await this.consumoRepo.manager.findOne('Estadia', { where: { id: dto.estadiaId } });
+    if (!estadia) throw new NotFoundException('Estadia no encontrada');
     const total = dto.cantidad * dto.precioUnitario;
     const consumo = this.consumoRepo.create({ ...dto, total });
     return this.consumoRepo.save(consumo);
@@ -23,3 +24,4 @@ export class ConsumoService {
     return this.consumoRepo.find({ relations: ['estadia'] });
   }
 }
+'@
