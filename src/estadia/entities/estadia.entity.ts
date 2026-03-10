@@ -1,8 +1,16 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+  JoinColumn,
+} from 'typeorm';
 import { Guest } from '../../guest/entities/guest.entity';
+import { Habitacion } from '../../habitacion/entities/habitacion.entity';
 import { Consumo } from '../../consumo/entities/consumo.entity';
 
-@Entity()
+@Entity('estadias')
 export class Estadia {
   @PrimaryGeneratedColumn()
   id: number;
@@ -13,20 +21,25 @@ export class Estadia {
   @Column()
   habitacionId: number;
 
-  @Column()
+  @Column({ type: 'date' })
   fechaIngreso: string;
 
-  @Column()
+  @Column({ type: 'date' })
   fechaSalida: string;
 
-  @Column('decimal')
+  @Column('decimal', { precision: 10, scale: 2 })
   precioPorNoche: number;
 
-  @Column('decimal')
+  @Column('decimal', { precision: 10, scale: 2 })
   subtotal: number;
 
   @ManyToOne(() => Guest, (guest) => guest.stays)
+  @JoinColumn({ name: 'huespedId' })
   guest: Guest;
+
+  @ManyToOne(() => Habitacion, (habitacion) => habitacion.estadias)
+  @JoinColumn({ name: 'habitacionId' })
+  habitacion: Habitacion;
 
   @OneToMany(() => Consumo, (consumo) => consumo.estadia)
   consumos: Consumo[];

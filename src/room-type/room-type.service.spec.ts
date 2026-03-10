@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { GuestService } from './guest.service';
-import { Guest } from './entities/guest.entity';
+import { RoomTypeService } from './room-type.service';
+import { RoomType } from './entities/room-type.entity';
 
-describe('GuestService', () => {
-  let service: GuestService;
+describe('RoomTypeService', () => {
+  let service: RoomTypeService;
 
   const mockRepository = {
     create: jest.fn(),
@@ -18,15 +18,15 @@ describe('GuestService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        GuestService,
+        RoomTypeService,
         {
-          provide: getRepositoryToken(Guest),
+          provide: getRepositoryToken(RoomType),
           useValue: mockRepository,
         },
       ],
     }).compile();
 
-    service = module.get<GuestService>(GuestService);
+    service = module.get<RoomTypeService>(RoomTypeService);
   });
 
   it('should be defined', () => {

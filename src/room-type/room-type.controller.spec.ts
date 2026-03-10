@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GuestController } from './guest.controller';
-import { GuestService } from './guest.service';
+import { RoomTypeController } from './room-type.controller';
+import { RoomTypeService } from './room-type.service';
 
-describe('GuestController', () => {
-  let controller: GuestController;
+describe('RoomTypeController', () => {
+  let controller: RoomTypeController;
 
-  const mockGuestService = {
+  const mockRoomTypeService = {
     create: jest.fn(),
     findAll: jest.fn(),
     findOne: jest.fn(),
@@ -15,16 +15,16 @@ describe('GuestController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [GuestController],
+      controllers: [RoomTypeController],
       providers: [
         {
-          provide: GuestService,
-          useValue: mockGuestService,
+          provide: RoomTypeService,
+          useValue: mockRoomTypeService,
         },
       ],
     }).compile();
 
-    controller = module.get<GuestController>(GuestController);
+    controller = module.get<RoomTypeController>(RoomTypeController);
   });
 
   it('should be defined', () => {

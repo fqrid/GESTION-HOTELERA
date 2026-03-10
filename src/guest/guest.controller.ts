@@ -1,13 +1,25 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import { GuestService } from './guest.service';
 import { CreateGuestDto } from './dto/create-guest.dto';
 import { UpdateGuestDto } from './dto/update-guest.dto';
 
-@Controller('guest')
+@Controller('guests')
 export class GuestController {
   constructor(private readonly guestService: GuestService) {}
 
   @Post()
+  @HttpCode(HttpStatus.CREATED)
   create(@Body() createGuestDto: CreateGuestDto) {
     return this.guestService.create(createGuestDto);
   }
@@ -18,17 +30,21 @@ export class GuestController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.guestService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.guestService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateGuestDto: UpdateGuestDto) {
-    return this.guestService.update(+id, updateGuestDto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateGuestDto: UpdateGuestDto,
+  ) {
+    return this.guestService.update(id, updateGuestDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.guestService.remove(+id);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.guestService.remove(id);
   }
 }

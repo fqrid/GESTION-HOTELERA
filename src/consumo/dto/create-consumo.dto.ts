@@ -1,7 +1,8 @@
-import { IsString, IsNumber, IsPositive, IsInt } from 'class-validator';
+import { IsString, IsNumber, IsPositive, IsInt, IsNotEmpty } from 'class-validator';
 
 export class CreateConsumoDto {
   @IsString()
+  @IsNotEmpty()
   descripcion: string;
 
   @IsNumber()
@@ -12,10 +13,7 @@ export class CreateConsumoDto {
   @IsPositive()
   cantidad: number;
 
-  @IsNumber()
-  @IsPositive()
-  total: number;
-
   @IsInt()
+  @IsPositive()
   estadiaId: number;
 }

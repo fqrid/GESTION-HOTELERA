@@ -1,9 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Estadia } from '../../estadia/entities/estadia.entity';
 
-@Entity()
+@Entity('guests')
 export class Guest {
-
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -16,7 +15,7 @@ export class Guest {
   @Column()
   phone: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @OneToMany(() => Estadia, (estadia) => estadia.guest)

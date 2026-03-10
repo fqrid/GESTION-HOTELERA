@@ -1,8 +1,36 @@
+import {
+  IsString,
+  IsInt,
+  IsBoolean,
+  IsPositive,
+  IsNumber,
+  IsOptional,
+  IsNotEmpty,
+  Min,
+} from 'class-validator';
+
 export class CreateHabitacionDto {
-    numero: string;
-    piso: number;
-    disponible: boolean;
-    capacidad: number;
-    precioPorNoche: number;
-    descripcion?: string;
+  @IsString()
+  @IsNotEmpty()
+  numero: string;
+
+  @IsInt()
+  @Min(1)
+  piso: number;
+
+  @IsBoolean()
+  @IsOptional()
+  disponible?: boolean;
+
+  @IsInt()
+  @IsPositive()
+  capacidad: number;
+
+  @IsNumber()
+  @IsPositive()
+  precioPorNoche: number;
+
+  @IsString()
+  @IsOptional()
+  descripcion?: string;
 }

@@ -1,23 +1,26 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, Logger } from '@nestjs/common';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const logger = new Logger('Bootstrap');
 
-  // Prefijo global (opcional pero recomendado)
   app.setGlobalPrefix('api');
 
-  // Validaciones globales
+  app.enableCors();
+
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true, // elimina propiedades que no estén en el DTO
-      forbidNonWhitelisted: true, // lanza error si envían campos extra
-      transform: true, // transforma automáticamente tipos (string → number)
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
     }),
   );
 
-  await app.listen(3000);
+  const port = process.env.PORT ?? 3000;
+  await app.listen(port);
+  logger.log(`Aplicación corriendo en: http://localhost:${port}/api`);
 }
 
 bootstrap();
