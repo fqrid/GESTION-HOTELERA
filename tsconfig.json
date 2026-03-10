@@ -1,15 +1,7 @@
 {
   "compilerOptions": {
-<<<<<<< Updated upstream
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "resolvePackageJsonExports": true,
-    "esModuleInterop": true,
-    "isolatedModules": true,
-=======
     "module": "commonjs",
     "moduleResolution": "node",
->>>>>>> Stashed changes
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,

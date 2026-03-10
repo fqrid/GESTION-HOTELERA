@@ -1,4 +1,3 @@
-Set-Content src\estadia\estadia.controller.ts @'
 import { Controller, Get, Post, Body, Param, ParseIntPipe } from '@nestjs/common';
 import { EstadiaService } from './estadia.service';
 import { CreateEstadiaDto } from './dto/create-estadia.dto';
@@ -28,4 +27,3 @@ export class EstadiaController {
     return this.estadiaService.detalleCuenta(+id);
   }
 }
-'@

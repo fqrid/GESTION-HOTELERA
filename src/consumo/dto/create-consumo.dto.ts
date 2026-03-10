@@ -1,8 +1,21 @@
-Set-Content src\consumo\dto\create-consumo.dto.ts @'
+import { IsString, IsNumber, IsPositive, IsInt } from 'class-validator';
+
 export class CreateConsumoDto {
-  estadiaId: number;
+  @IsString()
   descripcion: string;
+
+  @IsNumber()
+  @IsPositive()
+  precio: number;
+
+  @IsInt()
+  @IsPositive()
   cantidad: number;
-  precioUnitario: number;
+
+  @IsNumber()
+  @IsPositive()
+  total: number;
+
+  @IsInt()
+  estadiaId: number;
 }
-'@
